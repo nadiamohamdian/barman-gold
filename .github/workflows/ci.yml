@@ -1,0 +1,106 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 10.15.0
+
+    - name: Get pnpm store directory
+      shell: bash
+      run: |
+        echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+    - name: Setup pnpm cache
+      uses: actions/cache@v4
+      with:
+        path: ${{ env.STORE_PATH }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
+
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+
+    - name: Run ESLint with strict rules
+      run: pnpm lint
+      env:
+        NODE_ENV: production
+
+    - name: Type check API with strict TypeScript
+      run: |
+        cd apps/api
+        npx tsc --noEmit --strict --noUnusedLocals --noUnusedParameters
+      env:
+        NODE_ENV: production
+
+    - name: Type check Web with strict TypeScript
+      run: |
+        cd apps/web
+        npx tsc --noEmit --strict --noUnusedLocals --noUnusedParameters
+      env:
+        NODE_ENV: production
+
+    - name: Build all packages with production environment
+      run: |
+        export NODE_ENV=production
+        pnpm -r build
+      env:
+        NODE_ENV: production
+
+    - name: Verify build outputs
+      run: |
+        # Check if dist folders were created
+        ls -la apps/api/dist/
+        ls -la apps/web/.next/
+        
+        # Verify no TypeScript errors in production build
+        echo "✅ Production build completed successfully"
+        echo "✅ TypeScript and ESLint gates passed"
+
+    - name: Run additional production checks
+      run: |
+        # Verify API build integrity
+        cd apps/api
+        node -e "
+          try {
+            require('./dist/server.js');
+            console.log('✅ API server module loads successfully');
+          } catch (e) {
+            console.error('❌ API server module failed to load:', e.message);
+            process.exit(1);
+          }
+        "
+        
+        # Verify Web build integrity
+        cd ../web
+        if [ -f ".next/server/pages-manifest.json" ]; then
+          echo "✅ Web app build artifacts verified"
+        else
+          echo "❌ Web app build artifacts missing"
+          exit 1
+        fi
+      env:
+        NODE_ENV: production

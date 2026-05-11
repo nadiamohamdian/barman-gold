@@ -1,0 +1,97 @@
+version: '3.8'
+
+services:
+  # Database
+  database:
+    image: postgres:15-alpine
+    container_name: barman-gold-db
+    environment:
+      POSTGRES_DB: barman_gold
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - barman-network
+    restart: unless-stopped
+
+  # Redis (for caching)
+  redis:
+    image: redis:7-alpine
+    container_name: barman-gold-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - barman-network
+    restart: unless-stopped
+
+  # API Server
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: barman-gold-api
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://postgres:postgres123@database:5432/barman_gold
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: your-super-secret-jwt-key-here
+      BRS_API_KEY: your-brs-api-key-here
+      PORT: 4000
+    ports:
+      - "4000:4000"
+    depends_on:
+      - database
+      - redis
+    networks:
+      - barman-network
+    restart: unless-stopped
+    volumes:
+      - ./apps/api/uploads:/app/uploads
+
+  # Web Server
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    container_name: barman-gold-web
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: http://api:4000
+      NEXT_PUBLIC_APP_URL: https://barman-gold.ir
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+    networks:
+      - barman-network
+    restart: unless-stopped
+
+  # Nginx (Reverse Proxy)
+  nginx:
+    image: nginx:alpine
+    container_name: barman-gold-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - web
+      - api
+    networks:
+      - barman-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  barman-network:
+    driver: bridge

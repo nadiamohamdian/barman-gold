@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>خطا در اتصال - بارمن گلد</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #000201 0%, #1B252F 50%, #324554 100%);
+      color: #FFFFFF;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+      background: rgba(27, 37, 47, 0.9);
+      border-radius: 20px;
+      padding: 40px;
+      border: 1px solid #EBBF74;
+      box-shadow: 0 20px 40px rgba(235, 191, 116, 0.1);
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 30px;
+      background: linear-gradient(135deg, #EBBF74, #BE884A);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: bold;
+      color: #000201;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    h1 {
+      color: #EBBF74;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    .subtitle {
+      color: #9CA3AF;
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+
+    .description {
+      color: #9CA3AF;
+      font-size: 1rem;
+      margin-bottom: 40px;
+      line-height: 1.8;
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .btn {
+      background: linear-gradient(135deg, #EBBF74, #BE884A);
+      color: #000201;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      min-width: 200px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(235, 191, 116, 0.3);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: #EBBF74;
+      border: 2px solid #EBBF74;
+    }
+
+    .btn-secondary:hover {
+      background: #EBBF74;
+      color: #000201;
+    }
+
+    .status {
+      margin-top: 30px;
+      padding: 20px;
+      background: rgba(235, 191, 116, 0.1);
+      border-radius: 10px;
+      border: 1px solid rgba(235, 191, 116, 0.3);
+    }
+
+    .status-text {
+      color: #EBBF74;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .status-details {
+      color: #9CA3AF;
+      font-size: 0.9rem;
+    }
+
+    .features {
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+    }
+
+    .feature {
+      text-align: center;
+      padding: 20px;
+      background: rgba(27, 37, 47, 0.5);
+      border-radius: 10px;
+      border: 1px solid rgba(235, 191, 116, 0.2);
+    }
+
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .feature-title {
+      color: #EBBF74;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .feature-desc {
+      color: #9CA3AF;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 30px 20px;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .subtitle {
+        font-size: 1rem;
+      }
+      
+      .actions {
+        flex-direction: column;
+      }
+      
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">ب</div>
+    
+    <h1>خطا در اتصال</h1>
+    <p class="subtitle">متاسفانه در حال حاضر امکان دسترسی به سایت وجود ندارد</p>
+    
+    <p class="description">
+      لطفاً اتصال اینترنت خود را بررسی کنید و دوباره تلاش کنید. 
+      ما در حال تلاش برای حل این مشکل هستیم.
+    </p>
+
+    <div class="actions">
+      <button class="btn" onclick="window.location.reload()">
+        🔄 تلاش مجدد
+      </button>
+      
+      <a href="/" class="btn btn-secondary">
+        🏠 صفحه اصلی
+      </a>
+    </div>
+
+    <div class="status">
+      <div class="status-text">وضعیت اتصال</div>
+      <div class="status-details" id="connectionStatus">
+        در حال بررسی...
+      </div>
+    </div>
+
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">💎</div>
+        <div class="feature-title">طلا و جواهر</div>
+        <div class="feature-desc">کیفیت عالی</div>
+      </div>
+      
+      <div class="feature">
+        <div class="feature-icon">🚚</div>
+        <div class="feature-title">ارسال رایگان</div>
+        <div class="feature-desc">در سراسر کشور</div>
+      </div>
+      
+      <div class="feature">
+        <div class="feature-icon">🔒</div>
+        <div class="feature-title">امنیت بالا</div>
+        <div class="feature-desc">خرید مطمئن</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Check connection status
+    function checkConnection() {
+      const statusElement = document.getElementById('connectionStatus');
+      
+      if (navigator.onLine) {
+        statusElement.textContent = 'اتصال برقرار است - در حال بارگذاری...';
+        statusElement.style.color = '#4CAF50';
+        
+        // Try to reload after a short delay
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      } else {
+        statusElement.textContent = 'اتصال اینترنت قطع است';
+        statusElement.style.color = '#F44336';
+      }
+    }
+
+    // Check connection on load
+    checkConnection();
+
+    // Listen for online/offline events
+    window.addEventListener('online', () => {
+      checkConnection();
+    });
+
+    window.addEventListener('offline', () => {
+      checkConnection();
+    });
+
+    // Periodic connection check
+    setInterval(checkConnection, 5000);
+
+    // Service Worker registration
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .then(registration => {
+          console.log('Service Worker registered:', registration);
+        })
+        .catch(error => {
+          console.log('Service Worker registration failed:', error);
+        });
+    }
+  </script>
+</body>
+</html>
