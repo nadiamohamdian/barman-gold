@@ -1,4 +1,4 @@
-# 🏆 بارمن گلد - فروشگاه آنلاین طلا و جواهرات لوکس
+# 🏆 بارمن گلد - فروشگاه آنلاین طلا و جواهرات
 
 <div align="center">
   <img src="apps/web/public/logo/hair-salon-logo-gold-png.png" alt="بارمن گلد" width="200" height="200" />
@@ -83,7 +83,8 @@
 - **Express.js** - Web Framework
 - **TypeScript** - Type Safety
 - **Prisma** - ORM
-- **SQLite** - Database
+- **PostgerSql** - Database
+- **Redis** - cache
 - **JWT** - Authentication
 - **bcryptjs** - Password Hashing
 - **Zod** - Validation
