@@ -1,8 +1,6 @@
 # 🏆 بارمن گلد - فروشگاه آنلاین طلا و جواهرات
 
 <div align="center">
-  <img src="apps/web/public/logo/hair-salon-logo-gold-png.png" alt="بارمن گلد" width="200" height="200" />
-  
   <h3>فروشگاه آنلاین طلا و جواهرات با کیفیت عالی و قیمت مناسب</h3>
   
   [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
